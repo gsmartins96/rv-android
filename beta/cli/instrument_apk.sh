@@ -41,7 +41,7 @@ mv *.java ../rvm_tmp/.
 cd ..
 
 # Move all Java monitor classes into their final package namespace directory
-python lib/fix_java_packages.py
+python3 lib/fix_java_packages.py
 if [ "$?" = 1 ] ; then
     # Unable to resolve Java package
     exit
@@ -49,11 +49,11 @@ fi
 rm tmp/no_monitor_$1.jar
 
 # Merge monitor and application sources
-cp -rT rvm_tmp/ tmp/
+cp -r rvm_tmp/ tmp/
 rm -rf rvm_tmp/*
 
 # Instrument application with monitor classes
-ajc -cp lib/android-17/android.jar:lib/android-17/android-17-api.jar:lib/aspectjrt.jar:lib/rvmonitorrt.jar -inpath tmp -showWeaveInfo -d tmp -sourceroots $6
+ajc -cp lib/android-28/android.jar:lib/android-28/android-28-api.jar:lib/aspectjrt.jar:lib/rvmonitorrt.jar -inpath tmp -showWeaveInfo -d tmp -source 1.9 -sourceroots $6 
 if [ "$?" = 1 ] ; then
     echo "AspectJ has encountered a fatal error and needs to close. Dying!"
     exit
@@ -69,7 +69,7 @@ rm -rf META-INF rvmonitorrt.jar
 cd ..
 
 # Merge RV-Monitor support classes
-cp -rT rvm_tmp/ tmp/
+cp -r rvm_tmp/ tmp/
 rm -rf rvm_tmp/*
 
 # Compress resulting transformed classes to Jar
