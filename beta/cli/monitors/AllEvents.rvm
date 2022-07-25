@@ -1,0 +1,14 @@
+import java.io.*;
+import android.util.Log;
+import android.media.MediaPlayer.OnPreparedListener;
+import android.app.AlertDialog;
+import android.app.Activity;
+import android.content.DialogInterface;
+import java.lang.*;
+
+AllEvents(Object o) {
+	event allEvents(Object o){
+		Log.v("RV-MONITOR", "#### HELLO WORLD DE TESTE ####");
+		System.out.println("#### HELLO WORLD DE TESTE ####");
+	}
+}

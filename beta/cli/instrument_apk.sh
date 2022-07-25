@@ -53,7 +53,7 @@ cp -r rvm_tmp/ tmp/
 rm -rf rvm_tmp/*
 
 # Instrument application with monitor classes
-ajc -cp lib/android-28/android.jar:lib/android-28/android-28-api.jar:lib/aspectjrt.jar:lib/rvmonitorrt.jar -inpath tmp -showWeaveInfo -d tmp -source 1.9 -sourceroots $6 
+ajc -cp lib/android-30/android.jar:lib/android-30/android-30-api.jar:lib/aspectjrt.jar:lib/rvmonitorrt.jar -inpath tmp -showWeaveInfo -d tmp -source 1.8 -sourceroots $6 
 if [ "$?" = 1 ] ; then
     echo "AspectJ has encountered a fatal error and needs to close. Dying!"
     exit
@@ -78,12 +78,15 @@ jar cf monitored_$1.jar *
 cd ..
 
 # Compile classes in Jar to Dex format
-sh lib/dex2jar/d2j-jar2dex.sh -f -o tmp/classes.dex tmp/monitored_$1.jar
+echo "[+] Compile classes in Jar to Dex format"
+# sh lib/dex2jar/d2j-jar2dex.sh -f -o tmp/classes.dex tmp/monitored_$1.jar
+sh /Users/gabrielmartins/Android/Sdk/build-tools/30.0.3/dx --dex --output=tmp/classes.dex tmp/monitored_$1.jar 
 cp $1 tmp/$1
 cd tmp
 
 # Replace old classes.dex in APK with new classes.dex
-zip -r $1 classes.dex
+echo "[+] Replace with new classes.dex"
+zip -r $1 . -i classes.dex
 
 # Copy final classes.dex
 cp $1 ../out/unsigned_$1
