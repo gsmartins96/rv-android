@@ -79,8 +79,9 @@ cd ..
 
 # Compile classes in Jar to Dex format
 echo "[+] Compile classes in Jar to Dex format"
-# sh lib/dex2jar/d2j-jar2dex.sh -f -o tmp/classes.dex tmp/monitored_$1.jar
-sh /Users/gabrielmartins/Android/Sdk/build-tools/30.0.3/dx --dex --output=tmp/classes.dex tmp/monitored_$1.jar 
+sh lib/dex2jar/d2j-jar2dex.sh -f -o tmp/classes.dex tmp/monitored_$1.jar
+# Or try dx from sdk build toold
+# sh /Users/{username}/Android/Sdk/build-tools/26.0.0/dx --dex --output=tmp/classes.dex tmp/monitored_$1.jar
 cp $1 tmp/$1
 cd tmp
 
