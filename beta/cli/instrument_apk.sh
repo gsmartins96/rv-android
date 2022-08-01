@@ -79,9 +79,14 @@ cd ..
 
 # Compile classes in Jar to Dex format
 echo "[+] Compile classes in Jar to Dex format"
-sh lib/dex2jar/d2j-jar2dex.sh -f -o tmp/classes.dex tmp/monitored_$1.jar
-# Or try dx from sdk build toold
-# sh /Users/{username}/Android/Sdk/build-tools/26.0.0/dx --dex --output=tmp/classes.dex tmp/monitored_$1.jar
+# sh lib/dex2jar/d2j-jar2dex.sh -f -o tmp/classes.dex tmp/monitored_$1.jar
+# Or try using d8 from sdk build tools
+sh lib/build-tools/30.0.3/d8 tmp/monitored_$1.jar
+
+echo "Coping classes.dex to /tmp and delete from this directory"
+cp classes.dex ./tmp
+rm classes.dex
+
 cp $1 tmp/$1
 cd tmp
 
