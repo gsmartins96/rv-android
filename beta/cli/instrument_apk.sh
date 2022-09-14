@@ -2,13 +2,18 @@
 
 # Copyright 2014 Runtime Verification Inc., All Rights Reserved
 
-if [ "$#" -ne 6 ]; then
+CLASSPATH=/Users/gabrielmartins/Android/Sdk/platforms/android-17/android.jar:lib_tmp/aspectjrt.jar:lib_tmp/aspectjtools.jar:lib_tmp/aspectjweaver.jar:lib_tmp/cfg.jar:lib_tmp/ere.jar:lib_tmp/fsm.jar:lib_tmp/guava.jar:lib_tmp/logicrepository.jar:lib_tmp/ltl.jar:lib_tmp/pda.jar:lib_tmp/po.jar:lib_tmp/ptcaret.jar:lib_tmp/ptltl.jar:lib_tmp/rv-monitor-rt.jar:lib_tmp/rv-monitor.jar:lib_tmp/rvsec.jar:lib_tmp/scala-library.jar:lib_tmp/scala-parser-combinators_2.11.jar:lib_tmp/srs.jar:lib_tmp/surefire-api.jar:lib_tmp/surefire-booter.jar:lib_tmp/surefire-extensions-spi.jar:lib_tmp/surefire-logger-api.jar:lib_tmp/surefire-shared-utils.jar:lib_tmp/tfsm.jar:.
+JAVAMOP_HOME=lib/javamop/
+RV_MONITOR_HOME=../../../rv-monitor
+
+if [ "$#" -ne 5 ]; then
     echo "Illegal number of parameters!"
-    echo "Usage: instrument_apk.sh [apk] [keystore] [keystore password] [signing key alias] [monitors_directory] [aspects_directory]"
+    echo "Usage: instrument_apk.sh [apk] [keystore] [keystore password] [signing key alias] [monitors_directory]"
     exit
 fi
 
 # Set up output directories, removing old files
+find $5 -name "*.java" -exec rm -Rf {} \;
 rm -rf out tmp rvm_tmp
 mkdir out
 mkdir tmp
@@ -20,52 +25,68 @@ sh lib/dex2jar/d2j-dex2jar.sh -f -o tmp/no_monitor_$1.jar $1
 sh lib/dex2jar/d2j-asm-verify.sh tmp/no_monitor_$1.jar
 
 # Extract application classes, remove temporary application Jar
-cd tmp
-jar xf no_monitor_$1.jar
-cd ..
+echo "[+] Extract application classes"
+unzip -q tmp/no_monitor_$1.jar -d tmp
+rm tmp/no_monitor_$1.jar
+# jar xf no_monitor_$1.jar
+# cd ..
 
+# --------------- R E M O V E D -------------- #
 # Use RV-Monitor to compile all monitors to bytecode
-cd $5
-for i in *.rvm; do
-    out=$(rv-monitor $i)
-    if echo $out | grep -q "generated" ; then
-        echo "RV-Monitor successfully processed $i."
-    else
-        echo "RV-Monitor failed to process $i with an error! Failing!"
-        exit
-    fi
-done
+#cd $5
+#for i in *.rvm; do
+#    out=$(rv-monitor $i)
+#    if echo $out | grep -q "generated" ; then
+#        echo "RV-Monitor successfully processed $i."
+#    else
+#        echo "RV-Monitor failed to process $i with an error! Failing!"
+#        exit
+#    fi
+#done
+# --------------- R E M O V E D -------------- #
+
+echo "[+] Executing JavaMOP"
+$JAVAMOP_HOME/bin/javamop -s -merge $5/*.mop
+
+echo "[+] Executing RV-Monitor"
+$RV_MONITOR_HOME/bin/rv-monitor -s -merge -d $5 $5/*.rvm
 
 # Remove sources and dependencies
-mv *.java ../rvm_tmp/.
-cd ..
+cp -r rvm_tmp/ tmp/
+# cd ..
 
+# --------------- R E M O V E D -------------- #
 # Move all Java monitor classes into their final package namespace directory
-python3 lib/fix_java_packages.py
-if [ "$?" = 1 ] ; then
+# python3 lib/fix_java_packages.py
+# if [ "$?" = 1 ] ; then
     # Unable to resolve Java package
-    exit
-fi
-rm tmp/no_monitor_$1.jar
+#    exit
+# fi
+# --------------- R E M O V E D -------------- #
 
 # Merge monitor and application sources
-cp -r rvm_tmp/ tmp/
+echo "[+] Merge monitor and application sourcers"
+cp $5/*.java rvm_tmp/.
+cp $6/*.aj rvm_tmp/.
+cp -rf rvm_tmp/ tmp/
 rm -rf rvm_tmp/*
 
 # Instrument application with monitor classes
-ajc -cp lib/android-30/android.jar:lib/android-30/android-30-api.jar:lib/aspectjrt.jar:lib/rvmonitorrt.jar -inpath tmp -showWeaveInfo -d tmp -source 1.8 -sourceroots $6 
+echo "[+] Executing AspectJ"
+ajc -Xmx10240m -cp $CLASSPATH:monitors:tmp:. -Xlint:ignore -showWeaveInfo -inpath tmp -d tmp -source 1.8 -sourceroots $5 
 if [ "$?" = 1 ] ; then
     echo "AspectJ has encountered a fatal error and needs to close. Dying!"
     exit
 fi
 
 # Extract RV-Monitor support classes
-cp lib/rvmonitorrt.jar rvm_tmp/.
+echo "[+] Extract RV-Monitor support classes"
+cp lib_tmp/rv-monitor-rt.jar rvm_tmp/.
 cd rvm_tmp
-jar xf rvmonitorrt.jar
+jar xf rv-monitor-rt.jar
 
 # Remove rvmonitorrt's manifest and the temporarily copied Jar + property files
-rm -rf META-INF rvmonitorrt.jar
+rm -rf META-INF rv-monitor-rt.jar
 cd ..
 
 # Merge RV-Monitor support classes
@@ -79,10 +100,14 @@ cd ..
 
 # Compile classes in Jar to Dex format
 echo "[+] Compile classes in Jar to Dex format"
+
+# Using jar2dex from Dex2Jar
 # sh lib/dex2jar/d2j-jar2dex.sh -f -o tmp/classes.dex tmp/monitored_$1.jar
-# Or try using d8 from sdk build tools
+
+# Using D8 from SDK Build Tools
 sh lib/build-tools/30.0.3/d8 tmp/monitored_$1.jar
 
+# If using D8, change classes.dex folder
 echo "Coping classes.dex to /tmp and delete from this directory"
 cp classes.dex ./tmp
 rm classes.dex
@@ -92,7 +117,8 @@ cd tmp
 
 # Replace old classes.dex in APK with new classes.dex
 echo "[+] Replace with new classes.dex"
-zip -r $1 . -i classes.dex
+# zip -r $1 . -i classes.dex
+zip -r $1 classes.dex
 
 # Copy final classes.dex
 cp $1 ../out/unsigned_$1
