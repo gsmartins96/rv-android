@@ -22,6 +22,8 @@ mkdir rvm_tmp
 # Convert APK to Jar (with Java bytecode), verify output Jar
 echo "[+] Extracting Java classes to JAR in tmp/"
 sh lib/dex2jar/d2j-dex2jar.sh -f -o tmp/no_monitor_$1.jar $1
+
+echo "[+] Verify monitor em /tmp"
 sh lib/dex2jar/d2j-asm-verify.sh tmp/no_monitor_$1.jar
 
 # Extract application classes, remove temporary application Jar
@@ -66,8 +68,8 @@ cp -r rvm_tmp/ tmp/
 
 # Merge monitor and application sources
 echo "[+] Merge monitor and application sourcers"
+# cp $6/*.aj rvm_tmp/.
 cp $5/*.java rvm_tmp/.
-cp $6/*.aj rvm_tmp/.
 cp -rf rvm_tmp/ tmp/
 rm -rf rvm_tmp/*
 

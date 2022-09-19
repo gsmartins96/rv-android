@@ -351,7 +351,7 @@ class LoggerMonitor extends com.runtimeverification.rvmonitor.java.rt.tablebase.
 
 	final boolean Prop_1_event_g1(Object o) {
 		{
-			Log.v("RV-MONITOR:", "g1: ALL EVENTS MONITOR ASPECT");
+			Log.v("RV-MONITOR:", "match: ALL EVENTS MONITOR ASPECT");
 		}
 
 		int nextstate = this.handleEvent(0, Prop_1_transition_g1) ;
