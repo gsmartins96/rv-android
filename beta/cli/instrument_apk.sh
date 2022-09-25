@@ -13,8 +13,11 @@ if [ "$#" -ne 5 ]; then
 fi
 
 # Set up output directories, removing old files
+echo "[+] Remove generated files"
 find $5 -name "*.java" -exec rm -Rf {} \;
-rm -rf out tmp rvm_tmp
+rm -rf out tmp 
+rm -rf
+rm -rf monitors/*.aj monitors/*.rvm
 mkdir out
 mkdir tmp
 mkdir rvm_tmp

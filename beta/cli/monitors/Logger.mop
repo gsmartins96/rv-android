@@ -14,17 +14,19 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 
+import android.telephony.TelephonyManager;
+
 
 Logger() {
 
 	event g1 after (Object o): (call(* Object+.*(..)) && target(o)) {
-      Log.v("RV-MONITOR:", "match: ALL EVENTS MONITOR ASPECT");
-    }
+		Log.v("::::::::::::::::::::::::::::::::::::::::: RV-MONITOR: ", "Calling Object: " + o.getClass());
+	}
 	
 	ere : g1*
 
 	@match {
-           Log.v("RV-MONITOR:", "match: ALL EVENTS MONITOR ASPECT");
+    Log.v("JavaMOP: ", "match: Evento g1 realizado");
 	}
 }
 
