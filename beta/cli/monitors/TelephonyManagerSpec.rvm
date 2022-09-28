@@ -11,11 +11,14 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import android.telephony.TelephonyManager;
-Logger() {
-	event g1(Object o){
-		Log.v("::::::::::::::::::::::::::::::::::::::::: RV-MONITOR: ", "Calling Object: " + o.getClass());
+TelephonyManagerSpec() {
+	event gt(TelephonyManager tm){
+		Log.v("::::::::::::::::::::::::::::::::::::::::: RV-MONITOR: ", "Calling Object: ");
 	}
-	ere:  g1*
+	event gi(TelephonyManager tm){
+		Log.v("::::::::::::::::::::::::::::::::::::::::: RV-MONITOR: ", "Calling Object: ");
+	}
+	ere:  (gt | gi)*
 
 	@match
 	{

@@ -2,7 +2,7 @@
 
 # Copyright 2014 Runtime Verification Inc., All Rights Reserved
 
-CLASSPATH=/Users/gabrielmartins/Android/Sdk/platforms/android-17/android.jar:lib_tmp/aspectjrt.jar:lib_tmp/aspectjtools.jar:lib_tmp/aspectjweaver.jar:lib_tmp/cfg.jar:lib_tmp/ere.jar:lib_tmp/fsm.jar:lib_tmp/guava.jar:lib_tmp/logicrepository.jar:lib_tmp/ltl.jar:lib_tmp/pda.jar:lib_tmp/po.jar:lib_tmp/ptcaret.jar:lib_tmp/ptltl.jar:lib_tmp/rv-monitor-rt.jar:lib_tmp/rv-monitor.jar:lib_tmp/rvsec.jar:lib_tmp/scala-library.jar:lib_tmp/scala-parser-combinators_2.11.jar:lib_tmp/srs.jar:lib_tmp/surefire-api.jar:lib_tmp/surefire-booter.jar:lib_tmp/surefire-extensions-spi.jar:lib_tmp/surefire-logger-api.jar:lib_tmp/surefire-shared-utils.jar:lib_tmp/tfsm.jar:.
+CLASSPATH=/Users/gabrielmartins/Android/Sdk/platforms/android-26/android.jar:lib_tmp/aspectjrt.jar:lib_tmp/aspectjtools.jar:lib_tmp/aspectjweaver.jar:lib_tmp/cfg.jar:lib_tmp/ere.jar:lib_tmp/fsm.jar:lib_tmp/guava.jar:lib_tmp/logicrepository.jar:lib_tmp/ltl.jar:lib_tmp/pda.jar:lib_tmp/po.jar:lib_tmp/ptcaret.jar:lib_tmp/ptltl.jar:lib_tmp/rv-monitor-rt.jar:lib_tmp/rv-monitor.jar:lib_tmp/rvsec.jar:lib_tmp/scala-library.jar:lib_tmp/scala-parser-combinators_2.11.jar:lib_tmp/srs.jar:lib_tmp/surefire-api.jar:lib_tmp/surefire-booter.jar:lib_tmp/surefire-extensions-spi.jar:lib_tmp/surefire-logger-api.jar:lib_tmp/surefire-shared-utils.jar:lib_tmp/tfsm.jar:.
 JAVAMOP_HOME=lib/javamop/
 RV_MONITOR_HOME=../../../rv-monitor
 

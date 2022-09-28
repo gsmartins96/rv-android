@@ -17,13 +17,17 @@ import java.security.NoSuchAlgorithmException;
 import android.telephony.TelephonyManager;
 
 
-Logger() {
+TelephonyManagerSpec() {
 
-	event g1 after (Object o): (call(* Object+.*(..)) && target(o)) {
-		Log.v("::::::::::::::::::::::::::::::::::::::::: RV-MONITOR: ", "Calling Object: " + o.getClass());
+	event gt before(TelephonyManager tm) : (call(public int android.telephony.TelephonyManager.getPhoneType()) && target(tm)) {
+		Log.v("::::::::::::::::::::::::::::::::::::::::: RV-MONITOR: ", "Calling Object: ");
+	}
+
+	event gi before(TelephonyManager tm) : (call(public String android.telephony.TelephonyManager.getImei()) && target(tm)) {
+		Log.v("::::::::::::::::::::::::::::::::::::::::: RV-MONITOR: ", "Calling Object: ");
 	}
 	
-	ere : g1*
+	ere : (gt | gi)*
 
 	@match {
     Log.v("JavaMOP: ", "match: Evento g1 realizado");
