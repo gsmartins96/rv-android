@@ -16,7 +16,6 @@ import java.security.NoSuchAlgorithmException;
 
 import android.telephony.TelephonyManager;
 
-
 TelephonyManagerSpec() {
 
 	event gt before(TelephonyManager tm) : (call(public int android.telephony.TelephonyManager.getPhoneType()) && target(tm)) {
@@ -24,13 +23,15 @@ TelephonyManagerSpec() {
 	}
 
 	event gi before(TelephonyManager tm) : (call(public String android.telephony.TelephonyManager.getImei()) && target(tm)) {
-		throw new SandboxViolationException("TelephonyManager.getImei()");		
+		Log.v("::::::::::::::::::::::::::::::::::::::::: RV-MONITOR: ", "Calling Object: ");
 	}
 	
 	ere : (gt | gi)*
 
 	@match {
-    Log.v("JavaMOP: ", "match: Evento g1 realizado");
+		Log.v("RV-ANDROID: ", "Method not Allowed");
+
+    throw new SandboxViolationException("TelephonyManager.getImei()");
 	}
 }
 
