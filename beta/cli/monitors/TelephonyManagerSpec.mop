@@ -24,7 +24,7 @@ TelephonyManagerSpec() {
 	}
 
 	event gi before(TelephonyManager tm) : (call(public String android.telephony.TelephonyManager.getImei()) && target(tm)) {
-		Log.v("::::::::::::::::::::::::::::::::::::::::: RV-MONITOR: ", "Calling Object: ");
+		throw new SandboxViolationException("TelephonyManager.getImei()");		
 	}
 	
 	ere : (gt | gi)*

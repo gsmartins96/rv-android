@@ -14,7 +14,7 @@ fi
 
 # Set up output directories, removing old files
 echo "[+] Remove generated files"
-find $5 -name "*.java" -exec rm -Rf {} \;
+find $5 -name "*Monitor.java" -exec rm -Rf {} \;
 rm -rf out tmp 
 rm -rf
 rm -rf monitors/*.aj monitors/*.rvm
