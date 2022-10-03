@@ -19,11 +19,11 @@ import android.telephony.TelephonyManager;
 TelephonyManagerSpec() {
 
 	event gt before(TelephonyManager tm) : (call(public int android.telephony.TelephonyManager.getPhoneType()) && target(tm)) {
-		Log.v("::::::::::::::::::::::::::::::::::::::::: RV-MONITOR: ", "Calling Object: ");
+		Log.v("RV-MONITOR: ", "Calling Object: ");
 	}
 
 	event gi before(TelephonyManager tm) : (call(public String android.telephony.TelephonyManager.getImei()) && target(tm)) {
-		Log.v("::::::::::::::::::::::::::::::::::::::::: RV-MONITOR: ", "Calling Object: ");
+		Log.v("RV-MONITOR: ", "Calling Object: ");
 	}
 	
 	ere : (gt | gi)*

@@ -186,7 +186,8 @@ class TelephonyManagerSpecMonitor extends com.runtimeverification.rvmonitor.java
 			TelephonyManagerSpec_1_match_num++;
 		}
 		{
-			Log.v("JavaMOP: ", "match: Evento g1 realizado");
+			Log.v("RV-ANDROID: ", "Metodo não permetido");
+			throw new SandboxViolationException("TelephonyManager.getImei()");
 		}
 
 	}
